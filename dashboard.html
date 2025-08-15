@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Unit Number</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    input { margin: 5px; padding: 8px; }
+    button { padding: 8px 15px; cursor: pointer; }
+    .msg { margin-top: 15px; font-weight: bold; }
+    .success { color: green; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h2 id="welcome"></h2>
+  <form onsubmit="return checkNumber()">
+    <input type="text" id="unit" placeholder="Enter unit number" required autofocus>
+    <button type="submit">Send</button>
+  </form>
+  <p id="message" class="msg"></p>
+  <p><button onclick="logout()">Logout</button></p>
+
+  <script>
+    const correctNumber = "123456";
+    let user = localStorage.getItem("user");
+
+    if (!user) {
+      window.location.href = "login.html"; // redirect if not logged in
+    } else {
+      document.getElementById("welcome").textContent = "Welcome, " + user;
+    }
+
+    function checkNumber() {
+      let val = document.getElementById("unit").value;
+      if (val === correctNumber) {
+        document.getElementById("message").textContent = "Correct! You entered " + val;
+        document.getElementById("message").className = "msg success";
+      } else {
+        document.getElementById("message").textContent = "Wrong number: " + val;
+        document.getElementById("message").className = "msg error";
+      }
+      return false; // prevent reload
+    }
+
+    function logout() {
+      localStorage.removeItem("user");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

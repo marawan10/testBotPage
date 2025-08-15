@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login & Unit Check</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    input { margin: 5px; padding: 8px; }
+    button { padding: 8px 15px; cursor: pointer; }
+    .msg { margin-top: 15px; font-weight: bold; }
+    .success { color: green; }
+    .error { color: red; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Login Page -->
+  <div id="loginPage">
+    <h2>Login</h2>
+    <p class="error" id="loginError"></p>
+    <form onsubmit="return loginUser()">
+      <input type="text" id="username" placeholder="Username" required><br>
+      <input type="password" id="password" placeholder="Password" required><br>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <!-- Form Page -->
+  <div id="formPage" class="hidden">
+    <h2 id="welcome"></h2>
+    <form onsubmit="return checkNumber()">
+      <input type="text" id="unit" placeholder="Enter unit number" required autofocus>
+      <button type="submit">Send</button>
+    </form>
+    <p id="message" class="msg"></p>
+    <p><button onclick="logout()">Logout</button></p>
+  </div>
+
+  <script>
+    // Hardcoded users
+    const users = {
+      "marawan": "pass1",
+      "ali": "pass2",
+      "sara": "pass3"
+    };
+
+    const correctNumber = "123456";
+    let currentUser = null;
+
+    function loginUser() {
+      let u = document.getElementById("username").value;
+      let p = document.getElementById("password").value;
+
+      if (users[u] && users[u] === p) {
+        currentUser = u;
+        showFormPage();
+      } else {
+        document.getElementById("loginError").textContent = "Invalid username or password";
+      }
+      return false; // prevent reload
+    }
+
+    function checkNumber() {
+      let val = document.getElementById("unit").value;
+      if (val === correctNumber) {
+        document.getElementById("message").textContent = "Correct! You entered " + val;
+        document.getElementById("message").className = "msg success";
+      } else {
+        document.getElementById("message").textContent = "Wrong number: " + val;
+        document.getElementById("message").className = "msg error";
+      }
+      return false;
+    }
+
+    function logout() {
+      currentUser = null;
+      document.getElementById("unit").value = "";
+      document.getElementById("message").textContent = "";
+      showLoginPage();
+    }
+
+    function showFormPage() {
+      document.getElementById("loginPage").classList.add("hidden");
+      document.getElementById("formPage").classList.remove("hidden");
+      document.getElementById("welcome").textContent = "Welcome, " + currentUser + "!";
+    }
+
+    function showLoginPage() {
+      document.getElementById("loginPage").classList.remove("hidden");
+      document.getElementById("formPage").classList.add("hidden");
+      document.getElementById("loginError").textContent = "";
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+    }
+  </script>
+
+</body>
+</html>
